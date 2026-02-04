@@ -202,12 +202,24 @@
             color: var(--nvidia-green);
         }
 
+        /* 打字机效果的光标 */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-start infinite;
+            color: var(--nvidia-green);
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
         .hero-subtitle {
             font-size: clamp(1rem, 3vw, 1.4rem);
             color: #ccc;
             margin-bottom: 40px;
             font-weight: 300;
             padding: 0 10px;
+            min-height: 1.6em; /* 防止打字时高度跳动 */
         }
 
         .hero-actions {
@@ -283,6 +295,19 @@
             text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 1px;
+        }
+
+        /* 滚动渐显动画类 (Scroll Reveal) */
+        .reveal {
+            position: relative;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            transform: translateY(0);
+            opacity: 1;
         }
 
         /* 卡片网格布局 */
@@ -627,7 +652,8 @@
                 <span data-lang-key="hero_t1">Autonomous</span> <span data-lang-key="hero_t2" style="color:var(--nvidia-green)">Systems</span> <br>
                 <span data-lang-key="hero_t3">& Intelligent</span> <span data-lang-key="hero_t4" style="color:var(--nvidia-green)">Robots</span>
             </h1>
-            <p class="hero-subtitle" data-lang-key="hero_sub">MS Candidate at KTH Royal Institute of Technology & EURECOM</p>
+            <!-- 添加 typing-cursor 类来实现光标效果 -->
+            <p class="hero-subtitle typing-cursor" id="heroSubtitle"></p> 
             <div class="hero-actions">
                 <a href="#projects" class="btn btn-primary"><span data-lang-key="btn_proj">View Projects</span> <i class="fas fa-arrow-right"></i></a>
                 <a href="mailto:Qiao_Yuheng@outlook.com" class="btn btn-secondary"><span data-lang-key="btn_contact">Contact Me</span> <i class="fas fa-envelope"></i></a>
@@ -635,8 +661,8 @@
         </div>
     </div>
 
-    <!-- 教育背景 -->
-    <section id="about">
+    <!-- 教育背景 (Added class reveal) -->
+    <section id="about" class="reveal">
         <div class="section-header">
             <div class="section-line"></div>
             <h2 data-lang-key="sec_edu">Education</h2>
@@ -676,8 +702,8 @@
         </div>
     </section>
 
-    <!-- 实习经历 -->
-    <section id="experience">
+    <!-- 实习经历 (Added class reveal) -->
+    <section id="experience" class="reveal">
         <div class="section-header">
             <div class="section-line"></div>
             <h2 data-lang-key="sec_exp">Professional Experience</h2>
@@ -707,8 +733,8 @@
         </div>
     </section>
 
-    <!-- 项目经历 -->
-    <section id="projects">
+    <!-- 项目经历 (Added class reveal) -->
+    <section id="projects" class="reveal">
         <div class="section-header">
             <div class="section-line"></div>
             <h2 data-lang-key="sec_proj">Technical Projects</h2>
@@ -743,6 +769,7 @@
                     <ul>
                         <li data-lang-key="proj_robot_nav_d1">Developed and integrated a multi-level autonomous navigation framework using ROS2 Foxy, transitioning from basic State Machine logic to advanced Behavior Trees (BT) for complex task management.</li>
                         <li data-lang-key="proj_robot_nav_d2">Integrated sensor fusion (Lidar, Odometry) with the Navigation Stack and AMCL to achieve high-precision localization and dynamic obstacle avoidance in Gazebo-simulated environments.</li>
+                        <li data-lang-key="proj_robot_nav_d3">Implemented recovery behaviors within the Behavior Tree to handle edge cases such as re-localization and real-time deactivation.</li>
                         <li data-lang-key="proj_robot_nav_d4">Optimized the motion planning pipeline by configuring URDF and tuning navigation parameters, resulting in smoother trajectory generation and reduced goal-reaching latency compared to baseline implementations.</li>
                     </ul>
                 </div>
@@ -862,8 +889,8 @@
         </div>
     </section>
 
-    <!-- 论文与技能 -->
-    <section id="publications">
+    <!-- 论文与技能 (Added class reveal) -->
+    <section id="publications" class="reveal">
         <div class="section-header">
             <div class="section-line"></div>
             <h2 data-lang-key="sec_pub">Publications & Skills</h2>
@@ -1222,6 +1249,45 @@
             const langSelect = document.getElementById('langSelect');
             if (langSelect) langSelect.value = savedLang;
             changeLanguage(savedLang);
+            
+            // Start typewriter after load
+            setTimeout(typeWriter, 1000);
+        });
+
+        // Typewriter Effect
+        const subtitleText = "MS Candidate at KTH Royal Institute of Technology & EURECOM";
+        let i = 0;
+        function typeWriter() {
+            const el = document.getElementById("heroSubtitle");
+            // Only type if we are in English or if the content matches base (simple logic for now)
+            // Ideally, typewriter text should also come from translations. 
+            // For this implementation, we will fetch the current text from translation key 'hero_sub' then animate it.
+            // But doing that on language change is tricky. 
+            // Let's stick to the requested simple typewriter for the default load.
+            if (i < subtitleText.length) {
+                el.innerHTML += subtitleText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+
+        // Intersection Observer for Scroll Reveal
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            observer.observe(el);
         });
 
         // Canvas Animation
