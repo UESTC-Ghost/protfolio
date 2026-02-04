@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Agriculture | Project Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --nvidia-green: #76b900;
+            --nvidia-dark: #1a1a1a;
+            --nvidia-black: #000000;
+            --card-bg: #222222;
+            --text-white: #ffffff;
+            --text-gray: #b0b0b0;
+            --nav-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--nvidia-black);
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            height: var(--nav-height);
+            background: rgba(0, 0, 0, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 25px;
+            height: 25px;
+            background-color: var(--nvidia-green);
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 0% 100%);
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+
+        .back-link {
+            color: var(--text-white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover { color: var(--nvidia-green); }
+
+        .lang-select {
+            background-color: transparent;
+            color: var(--text-white);
+            border: 1px solid #444;
+            padding: 5px 10px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .lang-select:hover { border-color: var(--nvidia-green); color: var(--nvidia-green); }
+        .lang-select option { background-color: var(--nvidia-dark); color: var(--text-white); }
+
+        /* Header */
+        header {
+            padding: 150px 50px 80px;
+            text-align: center;
+            background: radial-gradient(circle at center, #0f2e0f 0%, #000 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #canvas-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.6; }
+        .header-content { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; }
+
+        h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); font-weight: 800; text-transform: uppercase; line-height: 1.1; margin-bottom: 20px; }
+        h1 span { color: var(--nvidia-green); }
+        h2 { font-weight: 300; margin-bottom: 20px; font-size: clamp(1.2rem, 3vw, 1.5rem); color: #ddd; }
+
+        .paper-meta { color: var(--text-gray); font-size: 1rem; margin-bottom: 30px; }
+        .badges { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .badge {
+            background: rgba(118, 185, 0, 0.1); color: var(--nvidia-green);
+            padding: 8px 16px; border: 1px solid var(--nvidia-green); border-radius: 4px;
+            font-weight: 600; font-size: 0.8rem; text-transform: uppercase;
+        }
+
+        /* Content */
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 30px; border-left: 5px solid var(--nvidia-green); padding-left: 20px; text-transform: uppercase; }
+        .content-block { background: var(--card-bg); border: 1px solid #333; padding: 40px; margin-bottom: 40px; position: relative; }
+        .content-block p { margin-bottom: 20px; color: #ddd; font-size: 1.05rem; text-align: justify; }
+
+        /* Diagram & Features */
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 30px; }
+        .feature-card { background: #111; border: 1px solid #444; padding: 30px; border-radius: 8px; transition: 0.3s; }
+        .feature-card:hover { border-color: var(--nvidia-green); transform: translateY(-5px); }
+        .feature-icon { font-size: 2rem; color: var(--nvidia-green); margin-bottom: 20px; }
+        .feature-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: #fff; }
+        
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px; }
+        .stat-card { background: #151515; padding: 25px; text-align: center; border-top: 3px solid var(--nvidia-green); }
+        .stat-val { font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
+        .stat-val span { font-size: 1.2rem; color: var(--nvidia-green); }
+        .stat-label { color: #888; font-size: 0.9rem; text-transform: uppercase; }
+
+        footer { text-align: center; padding: 50px; background: #111; border-top: 1px solid #333; color: #666; }
+
+        @media(max-width: 768px) {
+            nav { padding: 0 20px; }
+            h1 { font-size: 2rem; }
+            .content-block { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-icon"></div>
+            YUHENG <span>QIAO</span>
+        </a>
+        <div class="nav-right">
+            <div class="lang-switch-container">
+                <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+                    <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="fr">Français</option>
+                    <option value="sv">Svenska</option>
+                </select>
+            </div>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> <span data-lang-key="nav_back">Back to Portfolio</span>
+            </a>
+        </div>
+    </nav>
+
+    <header>
+        <canvas id="canvas-bg"></canvas>
+        <div class="header-content">
+            <h1 data-lang-key="proj_title">Intelligent Agricultural <span>Surveillance</span></h1>
+            <h2 data-lang-key="proj_sub">Bear Harm Monitoring & Governance System based on Deep Learning</h2>
+            <div class="paper-meta">
+                <i class="fas fa-users"></i> <span data-lang-key="meta_role">Core Member (Algorithm & Client Dev)</span> &bull; 
+                <i class="fas fa-calendar-alt"></i> Sept 2023 - May 2024 &bull; 
+                <i class="fas fa-trophy"></i> <span data-lang-key="meta_award">National Outstanding Prize</span>
+            </div>
+            <div class="badges">
+                <div class="badge">YOLOv8 + DCNv3</div>
+                <div class="badge">Jetson Nano</div>
+                <div class="badge">LoRa IoT</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <section>
+            <div class="section-title" data-lang-key="sec_bg">Project Background</div>
+            <div class="content-block">
+                <p data-lang-key="p_bg">
+                    In many agricultural regions, wild bear attacks pose a significant threat to both production safety and human lives. Traditional monitoring methods lack real-time alerts and efficient deterrence mechanisms.
+                </p>
+                <p data-lang-key="p_solution">
+                    We developed <strong>"BaiZe" (LUTBY)</strong>, a comprehensive system combining <strong>Deep Learning</strong>, <strong>Embedded Systems</strong>, and <strong>Cross-Platform Applications</strong>. The system achieves all-weather monitoring, real-time identification, and automated expulsion of bears, leveraging edge computing on the Nvidia Jetson Nano platform.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title" data-lang-key="sec_tech">Key Technologies</div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                    <div class="feature-title" data-lang-key="feat_ai_t">Advanced AI Model</div>
+                    <p style="color:#aaa; font-size:0.9rem;" data-lang-key="feat_ai_d">Improved YOLOv8 architecture by integrating <strong>DCNv3</strong> (Deformable Convolution) and <strong>Transformer</strong> self-attention modules to enhance detection accuracy in complex field environments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                    <div class="feature-title" data-lang-key="feat_hw_t">Embedded System</div>
+                    <p style="color:#aaa; font-size:0.9rem;" data-lang-key="feat_hw_d">Deployed on <strong>Nvidia Jetson Nano</strong>. Integrated HTD35H servos for omnidirectional monitoring, USB cameras for capture, and sirens/lights for active deterrence.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-broadcast-tower"></i></div>
+                    <div class="feature-title" data-lang-key="feat_iot_t">LoRa Communication</div>
+                    <p style="color:#aaa; font-size:0.9rem;" data-lang-key="feat_iot_d">Implemented <strong>LoRa</strong> technology for long-range, low-power communication (1-5km coverage), ensuring reliable alerts even in remote areas without cellular coverage.</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title" data-lang-key="sec_perf">System Performance</div>
+            <div class="content-block">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-val">95<span>%</span></div>
+                        <div class="stat-label" data-lang-key="stat_acc">Detection Accuracy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">5<span>km</span></div>
+                        <div class="stat-label" data-lang-key="stat_range">Max Comm Range</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-val">24/7</div>
+                        <div class="stat-label" data-lang-key="stat_ops">Autonomous Operation</div>
+                    </div>
+                </div>
+                <p style="margin-top:20px; color:#ddd;" data-lang-key="p_perf">
+                    The system also features a cross-platform client application developed with <strong>Electron</strong> and <strong>Vue.js</strong>, providing administrators with real-time visualization of threat locations, historical data statistics, and remote control capabilities.
+                </p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p data-lang-key="footer_text">&copy; 2026 Yuheng Qiao. International Intelligent Agricultural Equipment Innovation Competition.</p>
+    </footer>
+
+    <!-- Translations & Logic -->
+    <script>
+        const translations = {
+            en: {
+                nav_back: "Back to Portfolio",
+                proj_title: "Intelligent Agricultural <span>Surveillance</span>",
+                proj_sub: "Bear Harm Monitoring & Governance System based on Deep Learning",
+                meta_role: "Core Member (Algorithm & Client Dev)",
+                meta_award: "National Outstanding Prize",
+                sec_bg: "Project Background",
+                p_bg: "In many agricultural regions, wild bear attacks pose a significant threat to both production safety and human lives. Traditional monitoring methods lack real-time alerts and efficient deterrence mechanisms.",
+                p_solution: "We developed <strong>\"BaiZe\" (LUTBY)</strong>, a comprehensive system combining <strong>Deep Learning</strong>, <strong>Embedded Systems</strong>, and <strong>Cross-Platform Applications</strong>. The system achieves all-weather monitoring, real-time identification, and automated expulsion of bears, leveraging edge computing on the Nvidia Jetson Nano platform.",
+                sec_tech: "Key Technologies",
+                feat_ai_t: "Advanced AI Model",
+                feat_ai_d: "Improved YOLOv8 architecture by integrating <strong>DCNv3</strong> (Deformable Convolution) and <strong>Transformer</strong> self-attention modules to enhance detection accuracy in complex field environments.",
+                feat_hw_t: "Embedded System",
+                feat_hw_d: "Deployed on <strong>Nvidia Jetson Nano</strong>. Integrated HTD35H servos for omnidirectional monitoring, USB cameras for capture, and sirens/lights for active deterrence.",
+                feat_iot_t: "LoRa Communication",
+                feat_iot_d: "Implemented <strong>LoRa</strong> technology for long-range, low-power communication (1-5km coverage), ensuring reliable alerts even in remote areas without cellular coverage.",
+                sec_perf: "System Performance",
+                stat_acc: "Detection Accuracy",
+                stat_range: "Max Comm Range",
+                stat_ops: "Autonomous Operation",
+                p_perf: "The system also features a cross-platform client application developed with <strong>Electron</strong> and <strong>Vue.js</strong>, providing administrators with real-time visualization of threat locations, historical data statistics, and remote control capabilities.",
+                footer_text: "&copy; 2026 Yuheng Qiao. International Intelligent Agricultural Equipment Innovation Competition."
+            },
+            zh: {
+                nav_back: "返回主页",
+                proj_title: "智能农业<span>监视系统</span>",
+                proj_sub: "基于深度学习的熊害监测与治理系统 (白泽LUTBY)",
+                meta_role: "核心成员 (算法与客户端开发)",
+                meta_award: "国家级特等奖",
+                sec_bg: "项目背景",
+                p_bg: "在许多农业地区，野生熊的袭击对生产安全和人类生命构成了严重威胁。传统的监测方法缺乏实时预警和有效的威慑机制。",
+                p_solution: "我们开发了<strong>“白泽” (LUTBY)</strong>，这是一个结合了<strong>深度学习</strong>、<strong>嵌入式系统</strong>和<strong>跨平台应用</strong>的综合系统。该系统利用 Nvidia Jetson Nano 平台的边缘计算能力，实现了全天候监测、实时识别和熊类的自动驱逐。",
+                sec_tech: "关键技术",
+                feat_ai_t: "先进 AI 模型",
+                feat_ai_d: "改进 YOLOv8 架构，集成了 <strong>DCNv3</strong>（可形变卷积）和 <strong>Transformer</strong> 自注意力模块，增强了复杂野外环境下的检测精度。",
+                feat_hw_t: "嵌入式系统",
+                feat_hw_d: "部署于 <strong>Nvidia Jetson Nano</strong>。集成了 HTD35H 舵机实现全向监控，USB 摄像头用于捕捉，以及警报器/灯光用于主动威慑。",
+                feat_iot_t: "LoRa 通信",
+                feat_iot_d: "应用 <strong>LoRa</strong> 技术实现远距离、低功耗通信（1-5公里覆盖），确保在没有蜂窝网络覆盖的偏远地区也能可靠预警。",
+                sec_perf: "系统性能",
+                stat_acc: "检测准确率",
+                stat_range: "最大通信距离",
+                stat_ops: "自主运行",
+                p_perf: "该系统还具有使用 <strong>Electron</strong> 和 <strong>Vue.js</strong> 开发的跨平台客户端应用程序，为管理员提供威胁位置的实时可视化、历史数据统计和远程控制功能。",
+                footer_text: "&copy; 2026 乔宇恒. 国际大学生智能农业装备创新大赛."
+            },
+            fr: {
+                nav_back: "Retour au Portfolio",
+                proj_title: "Surveillance Agricole <span>Intelligente</span>",
+                proj_sub: "Système de surveillance et de gestion des ours basé sur le Deep Learning",
+                meta_role: "Membre principal (Algorithme & Dev Client)",
+                meta_award: "Prix National Exceptionnel",
+                sec_bg: "Contexte du Projet",
+                p_bg: "Dans de nombreuses régions agricoles, les attaques d'ours sauvages menacent la sécurité de la production et les vies humaines. Les méthodes traditionnelles manquent d'alertes en temps réel.",
+                p_solution: "Nous avons développé <strong>\"BaiZe\" (LUTBY)</strong>, un système complet combinant <strong>Deep Learning</strong>, <strong>Systèmes Embarqués</strong> et <strong>Applications Multiplateformes</strong>. Le système réalise une surveillance 24/7 sur la plateforme Nvidia Jetson Nano.",
+                sec_tech: "Technologies Clés",
+                feat_ai_t: "Modèle IA Avancé",
+                feat_ai_d: "Architecture YOLOv8 améliorée en intégrant des modules <strong>DCNv3</strong> et <strong>Transformer</strong> pour améliorer la précision de détection dans des environnements complexes.",
+                feat_hw_t: "Système Embarqué",
+                feat_hw_d: "Déployé sur <strong>Nvidia Jetson Nano</strong>. Intègre des servomoteurs HTD35H, des caméras USB et des sirènes pour une dissuasion active.",
+                feat_iot_t: "Communication LoRa",
+                feat_iot_d: "Technologie <strong>LoRa</strong> implémentée pour une communication longue portée (1-5 km) et basse consommation, assurant des alertes fiables même sans réseau cellulaire.",
+                sec_perf: "Performance du Système",
+                stat_acc: "Précision de Détection",
+                stat_range: "Portée Max Comm",
+                stat_ops: "Fonctionnement Autonome",
+                p_perf: "Le système comprend également une application client multiplateforme développée avec <strong>Electron</strong> et <strong>Vue.js</strong>.",
+                footer_text: "&copy; 2026 Yuheng Qiao. Compétition Internationale d'Innovation en Équipement Agricole Intelligent."
+            },
+            sv: {
+                nav_back: "Tillbaka till Portfölj",
+                proj_title: "Intelligent Jordbruks<span>övervakning</span>",
+                proj_sub: "Övervakningssystem för björnhot baserat på Deep Learning",
+                meta_role: "Kärnmedlem (Algoritm & Klientutveckling)",
+                meta_award: "Nationellt Utmärkt Pris",
+                sec_bg: "Projektbakgrund",
+                p_bg: "I många jordbruksregioner utgör vilda björnattacker ett betydande hot. Traditionella metoder saknar larm i realtid.",
+                p_solution: "Vi utvecklade <strong>\"BaiZe\" (LUTBY)</strong>, ett system som kombinerar <strong>Deep Learning</strong>, <strong>Inbyggda System</strong> och <strong>Plattformsoberoende Applikationer</strong> för övervakning dygnet runt på Nvidia Jetson Nano.",
+                sec_tech: "Nyckelteknologier",
+                feat_ai_t: "Avancerad AI-modell",
+                feat_ai_d: "Förbättrad YOLOv8-arkitektur genom att integrera <strong>DCNv3</strong> och <strong>Transformer</strong>-moduler för att förbättra detektionsnoggrannheten i komplexa miljöer.",
+                feat_hw_t: "Inbyggt System",
+                feat_hw_d: "Implementerad på <strong>Nvidia Jetson Nano</strong>. Integrerade servomotorer, USB-kameror och sirener för aktiv avskräckning.",
+                feat_iot_t: "LoRa-kommunikation",
+                feat_iot_d: "Implementerade <strong>LoRa</strong>-teknik för kommunikation med lång räckvidd (1-5 km) och låg effekt, vilket säkerställer larm även i avlägsna områden.",
+                sec_perf: "Systemprestanda",
+                stat_acc: "Detektionsnoggrannhet",
+                stat_range: "Max Räckvidd",
+                stat_ops: "Autonom Drift",
+                p_perf: "Systemet har också en klientapplikation utvecklad med <strong>Electron</strong> och <strong>Vue.js</strong>.",
+                footer_text: "&copy; 2026 Yuheng Qiao. Internationell tävling för innovation inom intelligent jordbruksutrustning."
+            }
+        };
+
+        function changeLanguage(lang) {
+            localStorage.setItem('preferredLang', lang);
+            const elements = document.querySelectorAll('[data-lang-key]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-lang-key');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLang') || 'en';
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) langSelect.value = savedLang;
+            changeLanguage(savedLang);
+        });
+
+        // Canvas Background
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        const themeColor = { r: 118, g: 185, b: 0 }; 
+
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        class Particle {
+            constructor() { this.x = Math.random() * width; this.y = Math.random() * height; this.vx = (Math.random()-0.5); this.vy = (Math.random()-0.5); this.size = Math.random()*2+1; }
+            update() { this.x += this.vx; this.y += this.vy; if(this.x<0||this.x>width)this.vx*=-1; if(this.y<0||this.y>height)this.vy*=-1; }
+            draw() { ctx.fillStyle = `rgba(${themeColor.r},${themeColor.g},${themeColor.b},0.5)`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+        }
+        function init() { particles = []; for(let i=0; i<60; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0,0,width,height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            for(let i=0; i<particles.length; i++){
+                for(let j=i+1; j<particles.length; j++){
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx*dx+dy*dy);
+                    if(dist < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(${themeColor.r},${themeColor.g},${themeColor.b},${1-dist/150})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize(); init(); animate();
+    </script>
+</body>
+</html>
