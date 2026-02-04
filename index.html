@@ -313,6 +313,13 @@
             height: 100%;
         }
 
+        /* 针对链接类型的卡片样式 */
+        a.card {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
         .card:hover {
             transform: translateY(-5px);
             border-color: var(--nvidia-green);
@@ -440,9 +447,9 @@
             transition: all 0.2s;
         }
         
-        .btn-text:hover {
-            color: #fff;
-            padding-left: 5px;
+        /* 当整个卡片是链接时，不需要内层 hover 变色，但保留原位置 */
+        a.card .btn-text:hover {
+             padding-left: 5px;
         }
 
         footer {
@@ -707,8 +714,8 @@
             <h2 data-lang-key="sec_proj">Technical Projects</h2>
         </div>
         <div class="grid">
-            <!-- Project 1: GraphRTL (LINKED) -->
-            <div class="card">
+            <!-- Project 1: GraphRTL (WHOLE CARD LINKED) -->
+            <a href="graphrtl.html" class="card" style="text-decoration: none; color: inherit;">
                 <div class="card-date" style="align-self: flex-start; margin-bottom: 15px;" data-lang-key="proj_rtl_date">Oct 2022 - Apr 2024</div>
                 <h3 data-lang-key="proj_rtl_title">GraphRTL Framework</h3>
                 <h4 data-lang-key="proj_rtl_sub">Agile Hardware Design based on Dataflow Graphs</h4>
@@ -718,10 +725,10 @@
                         <li data-lang-key="proj_rtl_d2">Designed a Python-based compiler to generate software-to-hardware code for data flow verification.</li>
                         <li data-lang-key="proj_rtl_d3">Reduced PE array compilation time by up to <strong>30%</strong> compared to traditional HLS.</li>
                     </ul>
-                    <!-- Link to Detail Page -->
-                    <a href="graphrtl.html" class="btn-text">
+                    <!-- Visual Link Indicator (Text only) -->
+                    <div class="btn-text">
                         <span data-lang-key="btn_view_detail">View Project Details</span> <i class="fas fa-arrow-right"></i>
-                    </a>
+                    </div>
                 </div>
                 <div class="tech-stack">
                     <span class="tech-tag">Chisel</span>
@@ -729,7 +736,7 @@
                     <span class="tech-tag">RTL Design</span>
                     <span class="tech-tag">EDA</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Project 2 -->
             <div class="card">
@@ -810,7 +817,6 @@
                     <li data-lang-key="pub_item_d2">Published in 2024 2nd International Symposium of Electronics Design Automation.</li>
                     <li>DOI: 10.1109/ISEDA62518.2024.10617508</li>
                 </ul>
-                <!-- Link to Detail Page -->
                 <a href="graphrtl.html" class="btn-text">
                     <span data-lang-key="btn_paper_detail">Read Full Paper Detail</span> <i class="fas fa-arrow-right"></i>
                 </a>
